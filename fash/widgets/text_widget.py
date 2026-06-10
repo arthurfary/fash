@@ -1,5 +1,6 @@
 from fash.widgets.base_widget import Widget
 import textwrap
+from fash.core.cell import Cell
 
 
 class TextWidget(Widget):
