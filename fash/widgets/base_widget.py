@@ -1,7 +1,9 @@
-from abc import abstractmethod
+from abc import ABC, abstractmethod
+
+from fash.core.cell_grid import CellGrid
 
 
-class Widget:
+class Widget(ABC):
     """
     Widget class
     """
@@ -10,7 +12,7 @@ class Widget:
         pass
 
     @abstractmethod
-    def draw(self, max_width, max_height) -> str:
+    def draw(self, max_rows: int, max_cols: int) -> CellGrid:
         """
         Function that handles the displaying of the widget.
 
