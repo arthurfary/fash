@@ -12,7 +12,7 @@ class Widget(ABC):
         pass
 
     @abstractmethod
-    def draw(self, max_width, max_height) -> CellGrid:
+    def draw(self, max_rows: int, max_cols: int) -> CellGrid:
         """
         Function that handles the displaying of the widget.
 

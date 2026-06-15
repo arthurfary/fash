@@ -10,16 +10,19 @@ class TextWidget(Widget):
         self.text = text
         self.PADDING_CHAR = "."
 
-    def draw(self, max_width, max_height) -> CellGrid:
-        out_str = self.title.center(max_width, self.PADDING_CHAR) + "\n"
+    def draw(self, max_rows: int, max_cols: int) -> CellGrid:
+        out_str = self.title.center(max_cols, self.PADDING_CHAR) + "\n"
         out_str = textwrap.fill(
             out_str + self.text,
-            max_width,
-            max_lines=max_height,
+            max_cols,
+            max_lines=max_rows,
         )
 
-        grid = CellGrid(max_width, max_height)
+        grid = CellGrid(max_rows, max_cols)
         for i, line in enumerate(out_str.splitlines()):
             grid.write(i, 0, line)
 
         return grid
+
+    def __str__(self) -> str:
+        return str(self.draw(10, 10))

@@ -10,3 +10,6 @@ class Style:
 class Cell:
     char: str = " "
     style: Style = field(default_factory=Style)
+
+    def __str__(self) -> str:
+        return self.char

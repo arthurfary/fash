@@ -22,3 +22,6 @@ class CellGrid:
         for i, char in enumerate(text):
             if 0 <= row_start < self.rows and 0 <= col < self.cols:
                 self.cells[row_start][col + i] = Cell(char, **style)
+
+    def __str__(self) -> str:
+        return str([col for col in [row for row in self.cells]])

@@ -29,3 +29,6 @@ class Window:
             raise IndexError
 
         self.grid[row][col] = widget
+
+    def __str__(self) -> str:
+        return str(self.grid)

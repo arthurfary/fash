@@ -3,7 +3,7 @@ from fash.draw.drawer import Drawer
 from fash.widgets.text_widget import TextWidget
 from fash.windowmanager.window import Window
 
-my_win = Window(1, 1)
+my_win = Window(2, 2)
 
 x = TextWidget(
     "Test",
@@ -11,7 +11,13 @@ x = TextWidget(
 )
 
 my_win.set_at(0, 0, x)
+my_win.set_at(0, 1, x)
+my_win.set_at(1, 0, x)
+my_win.set_at(1, 1, x)
 
-my_drawer = Drawer(10, 20, my_win)
+# print(my_win)
+# print(my_win.get_at(0, 0))
+
+my_drawer = Drawer(25, 100, my_win)
 
 my_drawer.draw_all()
