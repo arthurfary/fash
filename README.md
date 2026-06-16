@@ -2,14 +2,24 @@
 
 Terminal User Interface Framework
 
-## DRAWER
+---
 
-Iterar por cada posição do base window e vai chamar a função draw quando aplicavel passando os valores maximos de altura e largura para aquela janela
+## Development
 
-## WINDOW
+Clone the repository and install dependencies including development ones:
 
-Gerenciador de janelas, terá a posição e largura/altura dos widgets
+**Using uv:**
+```bash
+uv sync --dev
+```
 
-## WIDGETS
+**Using pip:**
+```bash
+pip install -e ".[dev]"
+```
 
-Serão instanciados em uma janela, terão uma função "draw" que recebe a altura e largura maxima retorna uma string formatada com base nas regras
+To run the tests:
+
+```bash
+pytest
+```
