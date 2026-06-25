@@ -18,6 +18,11 @@ class Window:
 
         self.grid = row_list
 
+    def get_grid_size(self) -> tuple[int, int]:
+        if len(self.grid) == 0: 
+            return 0, 0
+        return len(self.grid), len(self.grid[0])
+
     def get_at(self, row: int, col: int) -> Widget | None:
         if (row >= len(self.grid)) or (col >= len(self.grid[row])):
             raise IndexError

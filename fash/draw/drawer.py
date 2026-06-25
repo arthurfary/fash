@@ -4,8 +4,7 @@ from fash.windowmanager.window import Window
 
 class Drawer:
     def __init__(self, lines: int, columns: int, root_window: Window, window_separator: str = "") -> None:
-        num_rows = len(root_window.grid)
-        num_cols = len(root_window.grid[0])
+        num_rows, num_cols = root_window.get_grid_size()
 
         self.total_lines = lines
         self.total_columns = columns
