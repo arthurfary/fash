@@ -1,5 +1,4 @@
 from fash.core.cell_grid import CellGrid
-from fash.widgets.text_widget import TextWidget
 from fash.windowmanager.window import Window
 
 
