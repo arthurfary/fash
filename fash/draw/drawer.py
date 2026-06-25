@@ -46,14 +46,3 @@ class Drawer:
                 )
 
 
-if __name__ == "__main__":
-    x = Window(3, 2)
-    print(x)
-    x.set_at(0, 0, TextWidget("TESTING", "BODY"))
-    x.set_at(0, 1, TextWidget("TESTING", "BODY"))
-    x.set_at(2, 0, TextWidget("TESTING", "BODY"))
-    x.set_at(1, 0, TextWidget("TESTING", "BODY"))
-    d = Drawer(10, 50, x)
-    print(d.row_heights)
-    print(d.col_widths)
-    d.draw_all()
