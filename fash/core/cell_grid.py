@@ -1,4 +1,4 @@
-from fash.core.cell import Cell, Style
+from fash.core.cell import Cell
 
 
 # TODO:write a "set" and a "write" method:
