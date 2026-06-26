@@ -111,5 +111,4 @@ def test_separator_horizontal_row(full_window, capsys):
     grid = parse_terminal_grid(capsys.readouterr().out, rows, cols)
 
     sep_row = Drawer._distribute_sizes(rows, 2)[0] - 1  # 12, 0-indexed
-    breakpoint()
     assert all(grid[sep_row][col] == "#" for col in range(cols))
