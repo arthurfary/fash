@@ -1,7 +1,15 @@
+from fash.core.cell import Color
 from fash.core.cell_grid import CellGrid
-from fash.widgets.text_widget import TextWidget
 from fash.windowmanager.window import Window
 
+ANSI_COLOR_MAP: dict[Color, str] = {
+    Color.RED: "\033[31m",
+    Color.GREEN: "\033[32m",
+    Color.BLUE: "\033[34m",
+    Color.YELLOW: "\033[33m",
+}
+
+ANSI_RESET = "\033[0m"
 
 class Drawer:
     def __init__(self, lines: int, columns: int, root_window: Window, window_separator: str = "") -> None:
@@ -44,7 +52,13 @@ class Drawer:
     def _draw_content(self, grid: CellGrid, start_row: int, start_col: int):
         for row_idx, row in enumerate(grid.cells):
             for col_idx, cell in enumerate(row):
-                print(self._cursor_to(start_row + row_idx, start_col + col_idx) + cell.char)
+                color = self._set_color(cell.style.color) 
+                print(
+                    self._cursor_to(start_row + row_idx, start_col + col_idx)
+                    + color
+                    + cell.char
+                    + ("" if (color == "") else f"{ANSI_RESET}")
+                    )
 
     def _draw_separators(self, grid: CellGrid, start_row: int, start_col: int, is_last_row: bool, is_last_col: bool):
         height = len(grid.cells)
@@ -69,3 +83,8 @@ class Drawer:
     def _cursor_to(self, row: int, col: int) -> str:
         """ANSI escape to move cursor; row/col are 0-indexed."""
         return f"\033[{row + 1};{col + 1}H"
+    
+    def _set_color(self, color: Color | None) -> str:
+        if color is None:
+            return ""
+        return f"{ANSI_COLOR_MAP[color]}"
