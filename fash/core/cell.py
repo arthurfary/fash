@@ -1,9 +1,16 @@
+from enum import Enum
 from dataclasses import dataclass, field
 
+class Color(Enum):
+    RED = "RED"
+    GREEN = "GREEN"
+    BLUE = "BLUE"
+    YELLOW = "YELLOW"
 
 @dataclass
 class Style:
     bold: bool = False
+    color: Color | None = None
 
 
 @dataclass

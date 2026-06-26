@@ -1,6 +1,15 @@
+from fash.core.cell import Style, Color
 from fash.core.cell_grid import CellGrid
 from fash.windowmanager.window import Window
 
+ANSI_COLOR_MAP: dict[Color, str] = {
+    Color.RED: "\033[31m",
+    Color.GREEN: "\033[32m",
+    Color.BLUE: "\033[34m",
+    Color.YELLOW: "\033[33m",
+}
+
+ANSI_RESET = "\033[0m"
 
 class Drawer:
     def __init__(self, lines: int, columns: int, root_window: Window, window_separator: str = "") -> None:
@@ -13,6 +22,9 @@ class Drawer:
 
         self.row_heights = self._distribute_sizes(lines, num_rows)
         self.col_widths = self._distribute_sizes(columns, num_cols)
+
+        # Appended at the end of string to go back to standard text
+        self.undo_style = ""
 
     @staticmethod
     def _distribute_sizes(total: int, count: int) -> list[int]:
@@ -40,7 +52,18 @@ class Drawer:
                 print(
                     f"\033[{sum(self.row_heights[0:window_row]) + row_count + 1};{sum(self.col_widths[0:window_col]) + col_count + 1}H"
                     # f"\033[{window_row * self.max_lines_per_window + row_count + 1};{window_col * self.max_columns_per_window + col_count + 1}H"
+                    + self.__resolve_style(cell.style)
                     + cell.char
+                    + self.undo_style
                 )
+    
+    def __resolve_style(self, style: Style) -> str:
+        output = ""
+        if style.color is not None:
+            output += ANSI_COLOR_MAP[style.color]
+            self.undo_style = ANSI_RESET
+
+        return output
+
 
 
