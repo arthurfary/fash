@@ -1,6 +1,6 @@
-name: Tests
+name: Linter and type checks
 
-on: [push, pull_request]
+on: [pull_request]
 
 jobs:
   test:
@@ -18,5 +18,8 @@ jobs:
       - name: Install dependencies
         run: uv sync --group dev
 
-      - name: Run tests
-        run: uv run pytest -v tests/
+      - name: Run ty
+        run: uvx ty check
+
+      - name: Run ruff
+        run: uvx ruff check
