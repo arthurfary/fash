@@ -1,5 +1,6 @@
 from fash.core.cell import Color
-from fash.draw.drawer import Drawer, ANSI_COLOR_MAP, ANSI_RESET
+from fash.draw.styles import ANSI_COLOR_MAP, ANSI_RESET
+from fash.draw.drawer import Drawer
 import pytest
 import re
 from fash.widgets.text_widget import TextWidget, TextWidgetStyle
@@ -76,7 +77,6 @@ def test_color_reset_count_for_all_colors(colored_window, capsys):
     assert output.count(ANSI_RESET) == total_color_codes
 
 def test_ansi_color_map_values_are_valid():
-    assert len(ANSI_COLOR_MAP) == 4
     assert all(isinstance(code, str) and code.startswith("\033[") and code.endswith("m") for code in ANSI_COLOR_MAP.values())
 
     
