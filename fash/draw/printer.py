@@ -4,11 +4,11 @@ from .styles import ANSI_COLOR_MAP, ANSI_RESET, BOLD
 
 class Printer:
     def __init__(self):
-        self._changed = False
+        self._needs_reset = False
         pass
     
     def print(self, row: int, col: int, char: str = "", style: Style = Style()):
-        self._changed = False
+        self._needs_reset = False
         print(
             self._cursor_to(row, col)
             + self._color(style.color)
@@ -23,18 +23,18 @@ class Printer:
     
     def _color(self, color: Color | None) -> str:
         if (color is not None):
-            self._changed = True
+            self._needs_reset = True
             return ANSI_COLOR_MAP[color]
         return ""
     
     def _bold(self, bold: bool) -> str:
         if (bold):
-            self._changed = True
+            self._needs_reset = True
             return BOLD[True]
         return ""
     
     def _reset(self) -> str:
-        return ANSI_RESET if self._changed else ""
+        return ANSI_RESET if self._needs_reset else ""
 
     
 
