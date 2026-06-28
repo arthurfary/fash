@@ -2,6 +2,7 @@ from enum import Enum
 from dataclasses import dataclass, field
 
 class Color(Enum):
+    DEFAULT = "DEFAULT"
     RED = "RED"
     GREEN = "GREEN"
     BLUE = "BLUE"

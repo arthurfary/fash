@@ -1,18 +1,9 @@
-from fash.core.cell import Color
+from fash.draw.printer import Printer
 from fash.core.cell_grid import CellGrid
 from fash.windowmanager.window import Window
 
-ANSI_COLOR_MAP: dict[Color, str] = {
-    Color.RED: "\033[31m",
-    Color.GREEN: "\033[32m",
-    Color.BLUE: "\033[34m",
-    Color.YELLOW: "\033[33m",
-}
-
-ANSI_RESET = "\033[0m"
-
 class Drawer:
-    def __init__(self, lines: int, columns: int, root_window: Window, window_separator: str = "") -> None:
+    def __init__(self, lines: int, columns: int, root_window: Window, window_separator: str = "", printer: Printer | None = None) -> None:
 
         num_rows, num_cols = root_window.get_grid_size()
 
@@ -21,6 +12,7 @@ class Drawer:
         self.root_window = root_window
         self.row_heights = self._distribute_sizes(lines, num_rows)
         self.col_widths = self._distribute_sizes(columns, num_cols)
+        self.printer = printer or Printer()
 
         if len(window_separator) not in [0, 1]:
             raise ValueError("Window separator must be 0 or 1 character.")
@@ -52,13 +44,7 @@ class Drawer:
     def _draw_content(self, grid: CellGrid, start_row: int, start_col: int):
         for row_idx, row in enumerate(grid.cells):
             for col_idx, cell in enumerate(row):
-                color = self._set_color(cell.style.color) 
-                print(
-                    self._cursor_to(start_row + row_idx, start_col + col_idx)
-                    + color
-                    + cell.char
-                    + ("" if (color == "") else f"{ANSI_RESET}")
-                    )
+                self.printer.print(start_row + row_idx, start_col + col_idx, cell.char, cell.style)
 
     def _draw_separators(self, grid: CellGrid, start_row: int, start_col: int, is_last_row: bool, is_last_col: bool):
         height = len(grid.cells)
@@ -66,25 +52,16 @@ class Drawer:
 
         if not is_last_col:
             for row_idx in range(height):
-                print(self._cursor_to(start_row + row_idx, start_col + width) + self.window_separator)
+                self.printer.print(start_row + row_idx, start_col + width, self.window_separator)
 
         if not is_last_row:
             for col_idx in range(width):
-                print(self._cursor_to(start_row + height, start_col + col_idx) + self.window_separator)
+                self.printer.print(start_row + height, start_col + col_idx, self.window_separator)
 
             if not is_last_col:
-                print(self._cursor_to(start_row + height, start_col + width) + self.window_separator)
+                self.printer.print(start_row + height, start_col + width, self.window_separator)
 
     @staticmethod
     def _distribute_sizes(total: int, count: int) -> list[int]:
         base, remainder = divmod(total, count)
         return [base + 1] * remainder + [base] * (count - remainder)
-
-    def _cursor_to(self, row: int, col: int) -> str:
-        """ANSI escape to move cursor; row/col are 0-indexed."""
-        return f"\033[{row + 1};{col + 1}H"
-    
-    def _set_color(self, color: Color | None) -> str:
-        if color is None:
-            return ""
-        return f"{ANSI_COLOR_MAP[color]}"
