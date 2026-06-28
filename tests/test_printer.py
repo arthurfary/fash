@@ -43,7 +43,7 @@ class TestPrint:
     def test_no_style_produces_no_ansi(self, printer, capsys):
         printer.print(0, 0, "A")
         output = out(capsys)
-        assert output == cursor(0, 0) + "A\n"
+        assert output == cursor(0, 0) + "A"
 
     def test_color_applied(self, printer, capsys):
         printer.print(0, 0, "X", Style(color=Color.RED))
@@ -78,8 +78,9 @@ class TestPrint:
 
     def test_consecutive_calls_are_independent(self, printer, capsys):
         printer.print(0, 0, "A", Style(bold=True))
+        first = out(capsys)
         printer.print(0, 1, "B")
-        first, second = capsys.readouterr().out.split("\n", 1)
+        second = out(capsys)
         assert RESET   in first
         assert RESET   not in second
         assert BOLD_ON not in second

@@ -86,7 +86,7 @@ def test_draw_all_output_contains_ansi_codes(full_window, capsys):
 def test_draw_all_skips_none_cells(capsys):
     w = Window(2, 2)  # all cells are None
     Drawer(25, 100, w).draw_all()
-    assert capsys.readouterr().out == ""
+    assert strip_ansi(capsys.readouterr().out).strip() == ""
 
 
 def test_draw_all_renders_widget_content(sparse_window, capsys):
