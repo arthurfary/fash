@@ -1,9 +1,12 @@
+import os
+from typing import Literal, Tuple
+from fash.draw.reader import Reader
 from fash.draw.printer import Printer
 from fash.core.cell_grid import CellGrid
 from fash.windowmanager.window import Window
 
 class Drawer:
-    def __init__(self, lines: int, columns: int, root_window: Window, window_separator: str = "", printer: Printer | None = None) -> None:
+    def __init__(self, lines: int, columns: int, root_window: Window, window_separator: str = "", render_mode: Literal["absolute","dynamic"] = "absolute", printer: Printer | None = None, reader: Reader | None = None) -> None:
 
         num_rows, num_cols = root_window.get_grid_size()
 
@@ -13,12 +16,34 @@ class Drawer:
         self.row_heights = self._distribute_sizes(lines, num_rows)
         self.col_widths = self._distribute_sizes(columns, num_cols)
         self.printer = printer or Printer()
+        self.reader = reader or Reader()
+
+        self.render_mode: Literal["absolute", "dynamic"] = render_mode
+        self.row_offset = 0
+
+        if render_mode == "dynamic":
+            cursor_row, _ = self.reader.get_cursor_pos()
+            terminal_rows = self._get_terminal_size()[0]  # ou os.get_terminal_size()
+
+            space_needed = self.total_lines
+            space_available = terminal_rows - cursor_row
+
+            if space_available < space_needed:
+                # Força scroll imprimindo linhas em branco
+                lines_to_scroll = space_needed - space_available
+                print("\n" * lines_to_scroll, end="")
+                self.row_offset = terminal_rows - space_needed + 1
+            else:
+                self.row_offset = cursor_row
 
         if len(window_separator) not in [0, 1]:
             raise ValueError("Window separator must be 0 or 1 character.")
         self.window_separator = window_separator
 
     def draw_all(self):
+        if self.render_mode == "absolute":
+            self.printer.clear_screen()
+
         num_rows = len(self.root_window.grid)
 
         for row_idx, (row, row_height) in enumerate(zip(self.root_window.grid, self.row_heights)):
@@ -40,11 +65,13 @@ class Drawer:
 
                 if self.window_separator:
                     self._draw_separators(grid, start_row, start_col, is_last_row, is_last_col)
+        
+        self.printer.next_line()
 
     def _draw_content(self, grid: CellGrid, start_row: int, start_col: int):
         for row_idx, row in enumerate(grid.cells):
             for col_idx, cell in enumerate(row):
-                self.printer.print(start_row + row_idx, start_col + col_idx, cell.char, cell.style)
+                self.printer.print(start_row + row_idx + self.row_offset, start_col + col_idx, cell.char, cell.style)
 
     def _draw_separators(self, grid: CellGrid, start_row: int, start_col: int, is_last_row: bool, is_last_col: bool):
         height = len(grid.cells)
@@ -52,16 +79,21 @@ class Drawer:
 
         if not is_last_col:
             for row_idx in range(height):
-                self.printer.print(start_row + row_idx, start_col + width, self.window_separator)
+                self.printer.print(start_row + row_idx + self.row_offset, start_col + width, self.window_separator)
 
         if not is_last_row:
             for col_idx in range(width):
-                self.printer.print(start_row + height, start_col + col_idx, self.window_separator)
+                self.printer.print(start_row + height + self.row_offset, start_col + col_idx, self.window_separator)
 
             if not is_last_col:
-                self.printer.print(start_row + height, start_col + width, self.window_separator)
+                self.printer.print(start_row + height + self.row_offset, start_col + width, self.window_separator)
 
     @staticmethod
     def _distribute_sizes(total: int, count: int) -> list[int]:
         base, remainder = divmod(total, count)
         return [base + 1] * remainder + [base] * (count - remainder)
+    
+    @staticmethod
+    def _get_terminal_size() -> Tuple[int,int]:
+        col, row = os.get_terminal_size()
+        return row, col
