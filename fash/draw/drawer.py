@@ -21,24 +21,26 @@ class Drawer:
         self.render_mode: Literal["absolute", "dynamic"] = render_mode
         self.row_offset = 0
 
-        if render_mode == "dynamic":
+        self.calculate_row_offset()
+
+        if len(window_separator) not in [0, 1]:
+            raise ValueError("Window separator must be 0 or 1 character.")
+        self.window_separator = window_separator
+
+    def calculate_row_offset(self):
+        if self.render_mode == "dynamic":
             cursor_row, _ = self.reader.get_cursor_pos()
-            terminal_rows = self._get_terminal_size()[0]  # ou os.get_terminal_size()
+            terminal_rows, _ = self._get_terminal_size()
 
             space_needed = self.total_lines
             space_available = terminal_rows - cursor_row
 
             if space_available < space_needed:
-                # Força scroll imprimindo linhas em branco
                 lines_to_scroll = space_needed - space_available
                 print("\n" * lines_to_scroll, end="")
                 self.row_offset = terminal_rows - space_needed + 1
             else:
                 self.row_offset = cursor_row
-
-        if len(window_separator) not in [0, 1]:
-            raise ValueError("Window separator must be 0 or 1 character.")
-        self.window_separator = window_separator
 
     def draw_all(self):
         if self.render_mode == "absolute":
