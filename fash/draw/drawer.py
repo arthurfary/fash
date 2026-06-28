@@ -3,7 +3,7 @@ from fash.core.cell_grid import CellGrid
 from fash.windowmanager.window import Window
 
 class Drawer:
-    def __init__(self, lines: int, columns: int, root_window: Window, window_separator: str = "", printer: Printer = Printer()) -> None:
+    def __init__(self, lines: int, columns: int, root_window: Window, window_separator: str = "", printer: Printer | None = None) -> None:
 
         num_rows, num_cols = root_window.get_grid_size()
 
@@ -12,7 +12,7 @@ class Drawer:
         self.root_window = root_window
         self.row_heights = self._distribute_sizes(lines, num_rows)
         self.col_widths = self._distribute_sizes(columns, num_cols)
-        self.printer = printer
+        self.printer = printer or Printer()
 
         if len(window_separator) not in [0, 1]:
             raise ValueError("Window separator must be 0 or 1 character.")
