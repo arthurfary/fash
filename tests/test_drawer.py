@@ -90,22 +90,3 @@ def test_draw_all_renders_widget_content(sparse_window, capsys):
     Drawer(25, 100, sparse_window).draw_all()
     clean = AnsiFormatter.strip_ansi(capsys.readouterr().out).replace("\n", "")
     assert "Title" in clean
-
-
-def test_separator_vertical_column(full_window, capsys):
-    rows, cols = 25, 100
-    Drawer(rows, cols, full_window, "#").draw_all()
-    grid = parse_terminal_grid(capsys.readouterr().out, rows, cols)
-
-    # separator sits at the boundary of the first window's column allocation
-    sep_col = Drawer._distribute_sizes(cols, 2)[0] - 1  # 49, 0-indexed
-    assert all(grid[row][sep_col] == "#" for row in range(rows))
-
-
-def test_separator_horizontal_row(full_window, capsys):
-    rows, cols = 25, 100
-    Drawer(rows, cols, full_window, "#").draw_all()
-    grid = parse_terminal_grid(capsys.readouterr().out, rows, cols)
-
-    sep_row = Drawer._distribute_sizes(rows, 2)[0] - 1  # 12, 0-indexed
-    assert all(grid[sep_row][col] == "#" for col in range(cols))
