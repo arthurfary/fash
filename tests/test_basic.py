@@ -1,7 +1,6 @@
 from fash.draw.ansi import AnsiFormatter
 from fash.draw.drawer import Drawer
 import pytest
-import re
 from fash.widgets.text_widget import TextWidget
 from fash.windowmanager.window import Window
 from fash.core.widget import Widget
@@ -44,4 +43,3 @@ def test_drawer(lorem_ipsum_window, capsys):
     clean = AnsiFormatter.strip_ansi(captured.out).replace("\n", "")
 
     assert "Lorem ipsum" in clean
-
