@@ -83,41 +83,41 @@ def make_drawer(
 
 
 # ---------------------------------------------------------------------------
-# Validação do construtor
+# Constructor validation
 # ---------------------------------------------------------------------------
 
 
 def test_separator_empty_string_is_valid():
-    """Separador vazio é permitido."""
+    """Empty separator is allowed."""
     d = make_drawer(separator="")
     assert d.window_separator == ""
 
 
 def test_separator_single_char_is_valid():
-    """Separador de 1 caractere é permitido."""
+    """Single-character separator is allowed."""
     d = make_drawer(separator="|")
     assert d.window_separator == "|"
 
 
 def test_separator_two_chars_raises():
-    """Separador com 2+ caracteres deve lançar ValueError."""
+    """Separator with 2+ characters must raise ValueError."""
     with pytest.raises(ValueError):
         make_drawer(separator="||")
 
 
 def test_separator_long_string_raises():
-    """String longa deve lançar ValueError."""
+    """Long string must raise ValueError."""
     with pytest.raises(ValueError):
         make_drawer(separator="---")
 
 
 # ---------------------------------------------------------------------------
-# Separador vertical (entre colunas)
+# Vertical separator (between columns)
 # ---------------------------------------------------------------------------
 
 
 def test_vertical_separator_drawn_between_columns():
-    """O caractere separador deve aparecer na coluna logo após o conteúdo."""
+    """The separator character must appear in the column right after the content."""
     w = Window(1, 2)
     w.set_at(0, 0, TextWidget("T", "B"))
     w.set_at(0, 1, TextWidget("T", "B"))
@@ -131,7 +131,7 @@ def test_vertical_separator_drawn_between_columns():
 
 
 def test_vertical_separator_not_drawn_after_last_column():
-    """O separador NÃO deve ser desenhado após a última coluna."""
+    """The separator must NOT be drawn after the last column."""
     w = Window(1, 2)
     w.set_at(0, 0, TextWidget("T", "B"))
     w.set_at(0, 1, TextWidget("T", "B"))
@@ -145,17 +145,17 @@ def test_vertical_separator_not_drawn_after_last_column():
     last_col_end = last_col_start + col_widths[1]
 
     separator_cols = [
-        c[0][1]  # col arg do printer.print
+        c[0][1]  # col arg of printer.print
         for c in printer.print.call_args_list
         if c[0][2] == "|"
     ]
     assert all(col < last_col_end for col in separator_cols), (
-        "Separador foi desenhado além da última coluna"
+        "Separator was drawn beyond the last column"
     )
 
 
 def test_single_column_no_vertical_separator():
-    """Com apenas 1 coluna, nenhum separador vertical deve ser desenhado."""
+    """With only 1 column, no vertical separator must be drawn."""
     w = Window(1, 1)
     w.set_at(0, 0, TextWidget("T", "B"))
     printer = make_printer()
@@ -168,12 +168,12 @@ def test_single_column_no_vertical_separator():
 
 
 # ---------------------------------------------------------------------------
-# Separador horizontal (entre linhas)
+# Horizontal separator (between rows)
 # ---------------------------------------------------------------------------
 
 
 def test_horizontal_separator_drawn_between_rows():
-    """O caractere separador deve aparecer na linha logo após o conteúdo."""
+    """The separator character must appear in the row right after the content."""
     w = Window(2, 1)
     w.set_at(0, 0, TextWidget("T", "B"))
     w.set_at(1, 0, TextWidget("T", "B"))
@@ -187,7 +187,7 @@ def test_horizontal_separator_drawn_between_rows():
 
 
 def test_horizontal_separator_not_drawn_after_last_row():
-    """O separador NÃO deve ser desenhado após a última linha."""
+    """The separator must NOT be drawn after the last row."""
     w = Window(2, 1)
     w.set_at(0, 0, TextWidget("T", "B"))
     w.set_at(1, 0, TextWidget("T", "B"))
@@ -201,17 +201,17 @@ def test_horizontal_separator_not_drawn_after_last_row():
     last_row_end = last_row_start + row_heights[1]
 
     separator_rows = [
-        c[0][0]  # row arg do printer.print
+        c[0][0]  # row arg of printer.print
         for c in printer.print.call_args_list
         if c[0][2] == "-"
     ]
     assert all(row < last_row_end for row in separator_rows), (
-        "Separador foi desenhado abaixo da última linha"
+        "Separator was drawn below the last row"
     )
 
 
 def test_single_row_no_horizontal_separator():
-    """Com apenas 1 linha, nenhum separador horizontal deve ser desenhado."""
+    """With only 1 row, no horizontal separator must be drawn."""
     w = Window(1, 1)
     w.set_at(0, 0, TextWidget("T", "B"))
     printer = make_printer()
@@ -224,12 +224,12 @@ def test_single_row_no_horizontal_separator():
 
 
 # ---------------------------------------------------------------------------
-# Separador de canto (interseção)
+# Corner separator (intersection)
 # ---------------------------------------------------------------------------
 
 
 def test_corner_separator_drawn_at_intersection():
-    """Na interseção entre colunas e linhas, um separador de canto deve existir."""
+    """At the intersection between columns and rows, a corner separator must exist."""
     w = Window(2, 2)
     for r in range(2):
         for c in range(2):
@@ -240,24 +240,24 @@ def test_corner_separator_drawn_at_intersection():
     d.draw_all()
 
     separator_calls = [c[0] for c in printer.print.call_args_list if c[0][2] == "+"]
-    # Deve haver ao menos 1 chamada de canto (linha de sep + coluna de sep)
+    # There must be at least 1 corner call (separator row + separator column)
     assert len(separator_calls) >= 1
 
     row_values = {c[0] for c in separator_calls}
     col_values = {c[1] for c in separator_calls}
 
-    # Deve existir chamadas tanto em linhas quanto colunas de separador
+    # There must be calls in both separator rows and separator columns
     assert len(row_values) >= 1
     assert len(col_values) >= 1
 
 
 # ---------------------------------------------------------------------------
-# Cor do separador
+# Separator color
 # ---------------------------------------------------------------------------
 
 
 def test_separator_uses_default_color_by_default():
-    """Sem especificar cor, o separador usa Color.DEFAULT."""
+    """Without specifying a color, the separator uses Color.DEFAULT."""
     w = Window(1, 2)
     w.set_at(0, 0, TextWidget("T", "B"))
     w.set_at(0, 1, TextWidget("T", "B"))
@@ -274,7 +274,7 @@ def test_separator_uses_default_color_by_default():
 
 
 def test_separator_uses_custom_color():
-    """O separador deve ser desenhado com a cor especificada."""
+    """The separator must be drawn with the specified color."""
     w = Window(1, 2)
     w.set_at(0, 0, TextWidget("T", "B"))
     w.set_at(0, 1, TextWidget("T", "B"))
@@ -295,11 +295,11 @@ def test_separator_uses_custom_color():
             assert style.color == Color.RED
             return
 
-    pytest.fail("Nenhum separador foi desenhado")
+    pytest.fail("No separator was drawn")
 
 
 def test_horizontal_separator_uses_custom_color():
-    """Separador horizontal também deve respeitar a cor configurada."""
+    """Horizontal separator must also respect the configured color."""
     w = Window(2, 1)
     w.set_at(0, 0, TextWidget("T", "B"))
     w.set_at(1, 0, TextWidget("T", "B"))
@@ -320,28 +320,28 @@ def test_horizontal_separator_uses_custom_color():
             assert style.color == Color.BLUE
             return
 
-    pytest.fail("Nenhum separador horizontal foi desenhado")
+    pytest.fail("No horizontal separator was drawn")
 
 # ---------------------------------------------------------------------------
-# Sem separador: nenhuma chamada extra
+# No separator: no extra calls
 # ---------------------------------------------------------------------------
 
 
 def test_no_separator_calls_only_content_prints():
-    """Com separator='', _draw_separators não é chamado e nenhum char de sep aparece."""
+    """With separator='', _draw_separators is not called and no separator char appears."""
     w = Window(2, 2)
     for r in range(2):
         for c in range(2):
             w.set_at(r, c, TextWidget("T", "B"))
     printer = make_printer()
 
-    # Usamos um char fora do conteúdo esperado para verificar ausência
+    # We use a char outside the expected content to verify its absence
     d = Drawer(10, 20, w, window_separator="", printer=printer, reader=make_reader())
     d.draw_all()
 
-    # Sem separador, não deve haver nenhuma chamada com " " como separador isolado
-    # (verificamos indiretamente que _draw_separators não foi invocado)
-    # O número de print calls deve ser apenas o do conteúdo
+    # Without a separator, there must be no calls with " " as an isolated separator
+    # (we verify indirectly that _draw_separators was not invoked)
+    # The number of print calls must match only the content
     total_content_cells = sum(
         (d.row_heights[r] * d.col_widths[c])
         for r in range(2)
