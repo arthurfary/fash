@@ -1,13 +1,16 @@
 from dataclasses import dataclass
 from fash.core.cell import Style, Color
 from fash.core.cell_grid import CellGrid
-from fash.widgets.base_widget import Widget
+from fash.core.widget import Widget
+
 import textwrap
+
 
 @dataclass
 class TextWidgetStyle:
     color: Color | None = None
     bold: bool | None = None
+
 
 class TextWidget(Widget):
     def __init__(self, title: str, text: str, style: TextWidgetStyle = TextWidgetStyle()) -> None:

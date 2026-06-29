@@ -1,4 +1,4 @@
-from fash.widgets.base_widget import Widget
+from fash.core.widget import Widget
 
 
 class Window:
@@ -13,13 +13,13 @@ class Window:
         for _ in range(row):
             col_list = []
             for _ in range(col):
-                col_list.append(None)  # TODO: base widget class? specific widget for blank window in grid?
+                col_list.append(None)
             row_list.append(col_list)
 
         self.grid = row_list
 
     def get_grid_size(self) -> tuple[int, int]:
-        if len(self.grid) == 0: 
+        if len(self.grid) == 0:
             return 0, 0
         return len(self.grid), len(self.grid[0])
 
