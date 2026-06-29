@@ -1,46 +1,28 @@
 from fash.core.cell import Color, Style
-from .styles import ANSI_COLOR_MAP, ANSI_RESET, BOLD
+from fash.draw.ansi import AnsiCodes, AnsiFormatter
+
 
 class Printer:
-    def __init__(self):
-        self._needs_reset = False
-    
     def print(self, row: int, col: int, char: str = "", style: Style = Style()):
-        self._needs_reset = False
+        needs_reset = style.color is not None or style.bold  # decided upfront, not via side effects
         print(
-            self._cursor_to(row, col)
+            AnsiFormatter.move_cursor(row, col)
             + self._color(style.color)
             + self._bold(style.bold)
             + char
-            + self._reset()
-            , end=""
+            + (AnsiCodes.RESET if needs_reset else ""),
+            end="",
         )
-    
-    def _cursor_to(self, row: int, col: int) -> str:
-        """ANSI escape to move cursor; row/col are 0-indexed."""
-        return f"\033[{row + 1};{col + 1}H"
-    
+
     def _color(self, color: Color | None) -> str:
-        if (color is not None):
-            self._needs_reset = True
-            return ANSI_COLOR_MAP[color]
-        return ""
-    
+        return AnsiCodes.COLOR_MAP[color] if color is not None else ""
+
     def _bold(self, bold: bool) -> str:
-        if (bold):
-            self._needs_reset = True
-            return BOLD[True]
-        return ""
-    
-    def _reset(self) -> str:
-        return ANSI_RESET if self._needs_reset else ""
-    
+        return AnsiCodes.BOLD if bold else ""
+
     def clear_screen(self):
-        print("\033[2J", end="")
-    
+        print(AnsiCodes.CLEAR_SCREEN, end="")
+
     def next_line(self):
         print("\n", end="")
-
-
-    
 

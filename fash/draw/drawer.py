@@ -5,8 +5,18 @@ from fash.draw.printer import Printer
 from fash.core.cell_grid import CellGrid
 from fash.windowmanager.window import Window
 
+
 class Drawer:
-    def __init__(self, lines: int, columns: int, root_window: Window, window_separator: str = "", render_mode: Literal["absolute","dynamic"] = "absolute", printer: Printer | None = None, reader: Reader | None = None) -> None:
+    def __init__(
+        self,
+        lines: int,
+        columns: int,
+        root_window: Window,
+        window_separator: str = "",
+        render_mode: Literal["absolute", "dynamic"] = "absolute",
+        printer: Printer | None = None,
+        reader: Reader | None = None,
+    ) -> None:
 
         num_rows, num_cols = root_window.get_grid_size()
 
@@ -67,7 +77,7 @@ class Drawer:
 
                 if self.window_separator:
                     self._draw_separators(grid, start_row, start_col, is_last_row, is_last_col)
-        
+
         self.printer.next_line()
 
     def _draw_content(self, grid: CellGrid, start_row: int, start_col: int):
@@ -94,8 +104,8 @@ class Drawer:
     def _distribute_sizes(total: int, count: int) -> list[int]:
         base, remainder = divmod(total, count)
         return [base + 1] * remainder + [base] * (count - remainder)
-    
+
     @staticmethod
-    def _get_terminal_size() -> Tuple[int,int]:
+    def _get_terminal_size() -> Tuple[int, int]:
         col, row = os.get_terminal_size()
         return row, col
