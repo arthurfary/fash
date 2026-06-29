@@ -92,7 +92,7 @@ class Drawer:
                     self._draw_separators(
                         grid, self.rows_start_pos[row_idx], self.cols_start_pos[col_idx], is_last_row, is_last_col
                     )
-
+                    
         self.printer.next_line()
 
     def _draw_content(self, grid: CellGrid, start_row: int, start_col: int):
