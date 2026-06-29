@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from typing import Unpack, TypedDict
 from fash.core.cell import Style, Color
 from fash.core.cell_grid import CellGrid
 from fash.core.widget import Widget
@@ -6,18 +6,17 @@ from fash.core.widget import Widget
 import textwrap
 
 
-@dataclass
-class TextWidgetStyle:
-    color: Color | None = None
-    bold: bool | None = None
+class TextWidgetStyle(TypedDict, total=False):
+    color: Color | None
+    bold: bool | None
 
 
 class TextWidget(Widget):
-    def __init__(self, title: str, text: str, style: TextWidgetStyle = TextWidgetStyle()) -> None:
+    def __init__(self, title: str, text: str, **style: Unpack[TextWidgetStyle]) -> None:
         self.title = title
         self.text = text
         self.PADDING_CHAR = "."
-        self.main_color: Color | None = style.color
+        self.main_color: Color | None = style.get("color")
 
     def draw(self, max_rows: int, max_cols: int) -> CellGrid:
         out_str = self.title.center(max_cols, self.PADDING_CHAR) + "\n"

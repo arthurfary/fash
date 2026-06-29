@@ -1,3 +1,4 @@
+from fash.core.cell import Color, Style
 import os
 from typing import Literal, Tuple
 from fash.draw.reader import Reader
@@ -13,6 +14,7 @@ class Drawer:
         columns: int,
         root_window: Window,
         window_separator: str = "",
+        separator_color: Color = Color.DEFAULT,
         render_mode: Literal["absolute", "dynamic"] = "absolute",
         printer: Printer | None = None,
         reader: Reader | None = None,
@@ -40,6 +42,7 @@ class Drawer:
         if len(window_separator) not in [0, 1]:
             raise ValueError("Window separator must be 0 or 1 character.")
         self.window_separator = window_separator
+        self.separator_color = separator_color
 
     @staticmethod
     def _calculate_start_positions(sizes: list[int]) -> list[int]:
@@ -89,7 +92,7 @@ class Drawer:
                     self._draw_separators(
                         grid, self.rows_start_pos[row_idx], self.cols_start_pos[col_idx], is_last_row, is_last_col
                     )
-
+                    
         self.printer.next_line()
 
     def _draw_content(self, grid: CellGrid, start_row: int, start_col: int):
@@ -103,14 +106,14 @@ class Drawer:
 
         if not is_last_col:
             for row_idx in range(height):
-                self.printer.print(start_row + row_idx + self.row_offset, start_col + width, self.window_separator)
+                self.printer.print(start_row + row_idx + self.row_offset, start_col + width, self.window_separator, Style(color=self.separator_color))
 
         if not is_last_row:
             for col_idx in range(width):
-                self.printer.print(start_row + height + self.row_offset, start_col + col_idx, self.window_separator)
+                self.printer.print(start_row + height + self.row_offset, start_col + col_idx, self.window_separator, Style(color=self.separator_color))
 
             if not is_last_col:
-                self.printer.print(start_row + height + self.row_offset, start_col + width, self.window_separator)
+                self.printer.print(start_row + height + self.row_offset, start_col + width, self.window_separator, Style(color=self.separator_color))
 
     @staticmethod
     def _distribute_sizes(total: int, count: int) -> list[int]:

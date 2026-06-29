@@ -2,7 +2,7 @@ from fash.core.cell import Color
 from fash.draw.styles import ANSI_COLOR_MAP, ANSI_RESET
 from fash.draw.drawer import Drawer
 import pytest
-from fash.widgets.text_widget import TextWidget, TextWidgetStyle
+from fash.widgets.text_widget import TextWidget
 from fash.windowmanager.window import Window
 
 LOREM_IPSUM = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
@@ -15,10 +15,10 @@ def empty_window():
 
 @pytest.fixture
 def colored_window(empty_window):
-    r = TextWidget("Test", LOREM_IPSUM, style=TextWidgetStyle(Color.RED))
-    g = TextWidget("Test", LOREM_IPSUM, style=TextWidgetStyle(Color.GREEN))
-    b = TextWidget("Test", LOREM_IPSUM, style=TextWidgetStyle(Color.BLUE))
-    y = TextWidget("Test", LOREM_IPSUM, style=TextWidgetStyle(Color.YELLOW))
+    r = TextWidget("Test", LOREM_IPSUM, color=Color.RED)
+    g = TextWidget("Test", LOREM_IPSUM, color=Color.GREEN)
+    b = TextWidget("Test", LOREM_IPSUM, color=Color.BLUE)
+    y = TextWidget("Test", LOREM_IPSUM, color=Color.YELLOW)
     empty_window.set_at(0, 0, r)
     empty_window.set_at(0, 1, g)
     empty_window.set_at(1, 0, b)
@@ -28,7 +28,7 @@ def colored_window(empty_window):
 
 @pytest.fixture
 def red_and_white_window(empty_window):
-    r = TextWidget("Test", LOREM_IPSUM, style=TextWidgetStyle(Color.RED))
+    r = TextWidget("Test", LOREM_IPSUM, color=Color.RED)
     w = TextWidget("Test", LOREM_IPSUM)
     empty_window.set_at(0, 0, r)
     empty_window.set_at(0, 1, w)
