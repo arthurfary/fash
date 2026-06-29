@@ -1,12 +1,9 @@
+from fash.draw.ansi import AnsiFormatter
 from fash.draw.drawer import Drawer
 import pytest
 import re
 from fash.widgets.text_widget import TextWidget
 from fash.windowmanager.window import Window
-
-
-def strip_ansi(text: str) -> str:
-    return re.sub(r"\x1b\[[^A-Za-z]*[A-Za-z]", "", text)
 
 
 @pytest.fixture
@@ -86,12 +83,12 @@ def test_draw_all_output_contains_ansi_codes(full_window, capsys):
 def test_draw_all_skips_none_cells(capsys):
     w = Window(2, 2)  # all cells are None
     Drawer(25, 100, w).draw_all()
-    assert strip_ansi(capsys.readouterr().out).strip() == ""
+    assert AnsiFormatter.strip_ansi(capsys.readouterr().out).strip() == ""
 
 
 def test_draw_all_renders_widget_content(sparse_window, capsys):
     Drawer(25, 100, sparse_window).draw_all()
-    clean = strip_ansi(capsys.readouterr().out).replace("\n", "")
+    clean = AnsiFormatter.strip_ansi(capsys.readouterr().out).replace("\n", "")
     assert "Title" in clean
 
 
