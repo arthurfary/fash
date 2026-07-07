@@ -1,3 +1,4 @@
+from fash.core.exceptions import InvalidCharacterLengthError
 from fash.core.cell import Cell, Style
 
 
@@ -13,7 +14,7 @@ class CellGrid:
 
     def set(self, row: int, col: int, character: str, style: Style):
         if len(character) != 1:
-            raise ValueError("CellGrid: set character must be of length 1")
+            raise InvalidCharacterLengthError("CellGrid: Set character must be of length 1")
 
         if 0 <= row < self.rows and 0 <= col < self.cols:
             self.cells[row][col] = Cell(character, style)

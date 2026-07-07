@@ -1,3 +1,4 @@
+from fash.core.exceptions import InvalidCharacterLengthError
 from fash.core.cell import Color, Style
 import os
 from typing import Literal, Tuple
@@ -40,7 +41,7 @@ class Drawer:
         self.calculate_row_offset()
 
         if len(window_separator) not in [0, 1]:
-            raise ValueError("Window separator must be 0 or 1 character.")
+            raise InvalidCharacterLengthError("Drawer: Window separator must be 0 or 1 character.")
         self.window_separator = window_separator
         self.separator_color = separator_color
 

@@ -1,3 +1,4 @@
+from fash.core.exceptions import CursorPositionError
 from typing import Tuple
 from io import UnsupportedOperation
 import sys
@@ -50,7 +51,7 @@ class Reader:
         match = re.search(r"\[(\d+);(\d+)R", response)
         
         if not match:
-            raise IOError("Could not read cursor position")
+            raise CursorPositionError("Reader: Could not read cursor position")
 
         row, col = int(match.group(1)), int(match.group(2))
 
