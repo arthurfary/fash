@@ -2,7 +2,7 @@ from contextlib import contextmanager
 from fash.core.exceptions import CursorPositionError
 from typing import Tuple
 from io import UnsupportedOperation
-from typing import Iterator, Tuple
+from typing import Iterator
 import os
 import re
 import select
