@@ -1,3 +1,5 @@
+import sys
+
 from fash.core.cell import Color, Style
 from fash.draw.ansi import AnsiCodes, AnsiFormatter
 
@@ -24,5 +26,5 @@ class Printer:
         print(AnsiCodes.CLEAR_SCREEN, end="")
 
     def next_line(self):
-        print("\n", end="")
-
+        sys.stdout.flush()
+        # print("\n", end="")
