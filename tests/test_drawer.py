@@ -1,12 +1,9 @@
+from fash.draw.ansi import AnsiFormatter
 from fash.draw.drawer import Drawer
 import pytest
 import re
 from fash.widgets.text_widget import TextWidget
 from fash.windowmanager.window import Window
-
-
-def strip_ansi(text: str) -> str:
-    return re.sub(r"\x1b\[[^A-Za-z]*[A-Za-z]", "", text)
 
 
 @pytest.fixture
@@ -24,6 +21,18 @@ def sparse_window():
     w = Window(2, 2)
     w.set_at(0, 0, TextWidget("Title", "Body text"))
     return w  # remaining 3 cells are None
+
+
+def parse_terminal_grid(raw: str, rows: int, cols: int) -> list[list[str]]:
+    """Reconstruct a 2D grid from ANSI cursor-positioning output."""
+    grid = [[" "] * cols for _ in range(rows)]
+    for match in re.finditer(r"\x1b\[(\d+);(\d+)H(.)", raw):
+        row = int(match.group(1)) - 1  # ANSI is 1-indexed
+        col = int(match.group(2)) - 1
+        char = match.group(3)
+        if 0 <= row < rows and 0 <= col < cols:
+            grid[row][col] = char
+    return grid
 
 
 # --- _distribute_sizes ---
@@ -74,10 +83,10 @@ def test_draw_all_output_contains_ansi_codes(full_window, capsys):
 def test_draw_all_skips_none_cells(capsys):
     w = Window(2, 2)  # all cells are None
     Drawer(25, 100, w).draw_all()
-    assert capsys.readouterr().out == ""
+    assert AnsiFormatter.strip_ansi(capsys.readouterr().out).strip() == ""
 
 
 def test_draw_all_renders_widget_content(sparse_window, capsys):
     Drawer(25, 100, sparse_window).draw_all()
-    clean = strip_ansi(capsys.readouterr().out).replace("\n", "")
+    clean = AnsiFormatter.strip_ansi(capsys.readouterr().out).replace("\n", "")
     assert "Title" in clean
