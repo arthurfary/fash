@@ -3,7 +3,7 @@ from fash.core.cell import Style, Color
 from fash.core.cell_grid import CellGrid
 from fash.core.signal import Signal
 from fash.core.widget import Widget
-from fash.draw.keys import Key, SpecialKey
+from fash.core.keys import Key, SpecialKey
 
 
 class TextWidgetStyle(TypedDict, total=False):

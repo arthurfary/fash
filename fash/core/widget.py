@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 from fash.core.cell_grid import CellGrid
 from fash.core.signal import Signal
-from fash.draw.keys import Key
+from fash.core.keys import Key
 
 
 class Widget(ABC):

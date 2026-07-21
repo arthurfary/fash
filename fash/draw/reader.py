@@ -10,7 +10,7 @@ import sys
 import termios
 import tty
 
-from fash.draw.keys import ARROW_KEYS, ESC, SIMPLE_KEYS, Key, SpecialKey
+from fash.core.keys import ARROW_KEYS, ESC, SIMPLE_KEYS, Key, SpecialKey
 
 
 class Reader:
