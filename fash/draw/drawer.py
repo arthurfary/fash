@@ -93,7 +93,7 @@ class Drawer:
                     self._draw_separators(
                         grid, self.rows_start_pos[row_idx], self.cols_start_pos[col_idx], is_last_row, is_last_col
                     )
-                    
+
         self.printer.next_line()
 
     def _draw_content(self, grid: CellGrid, start_row: int, start_col: int):
@@ -107,14 +107,29 @@ class Drawer:
 
         if not is_last_col:
             for row_idx in range(height):
-                self.printer.print(start_row + row_idx + self.row_offset, start_col + width, self.window_separator, Style(color=self.separator_color))
+                self.printer.print(
+                    start_row + row_idx + self.row_offset,
+                    start_col + width,
+                    self.window_separator,
+                    Style(color=self.separator_color),
+                )
 
         if not is_last_row:
             for col_idx in range(width):
-                self.printer.print(start_row + height + self.row_offset, start_col + col_idx, self.window_separator, Style(color=self.separator_color))
+                self.printer.print(
+                    start_row + height + self.row_offset,
+                    start_col + col_idx,
+                    self.window_separator,
+                    Style(color=self.separator_color),
+                )
 
             if not is_last_col:
-                self.printer.print(start_row + height + self.row_offset, start_col + width, self.window_separator, Style(color=self.separator_color))
+                self.printer.print(
+                    start_row + height + self.row_offset,
+                    start_col + width,
+                    self.window_separator,
+                    Style(color=self.separator_color),
+                )
 
     @staticmethod
     def _distribute_sizes(total: int, count: int) -> list[int]:
