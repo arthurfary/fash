@@ -1,9 +1,11 @@
+import re
+
+import pytest
+
 from fash.draw.ansi import AnsiFormatter
 from fash.draw.drawer import Drawer
-import pytest
-import re
 from fash.widgets.text_widget import TextWidget
-from fash.windowmanager.window import Window
+from fash.window import Window
 
 
 @pytest.fixture

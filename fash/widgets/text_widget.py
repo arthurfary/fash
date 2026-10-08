@@ -1,21 +1,17 @@
-from typing import Unpack, TypedDict
-from fash.core.cell import Style, Color
+import textwrap
+from typing import Unpack
+
+from fash.core.cell import Color, Style
 from fash.core.cell_grid import CellGrid
 from fash.core.widget import Widget
-
-import textwrap
-
-
-class TextWidgetStyle(TypedDict, total=False):
-    color: Color | None
-    bold: bool | None
+from fash.widgets.style import WidgetStyle
 
 
 class TextWidget(Widget):
-    def __init__(self, title: str, text: str, **style: Unpack[TextWidgetStyle]) -> None:
+    def __init__(self, title: str, text: str, **style: Unpack[WidgetStyle]) -> None:
         self.title = title
         self.text = text
-        self.PADDING_CHAR = "."
+        self.PADDING_CHAR = " "
         self.main_color: Color | None = style.get("color")
 
     def draw(self, max_rows: int, max_cols: int) -> CellGrid:

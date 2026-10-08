@@ -1,12 +1,13 @@
-import pytest
-import re
-from fash.draw.drawer import Drawer
-from fash.draw.reader import Reader
-from fash.widgets.text_widget import TextWidget
-from fash.windowmanager.window import Window
 import os
+import re
 import unittest.mock as mock
 
+import pytest
+
+from fash.draw.drawer import Drawer
+from fash.input import Reader
+from fash.widgets.text_widget import TextWidget
+from fash.window import Window
 
 # ── Fakes ──────────────────────────────────────────────────────────────────────
 

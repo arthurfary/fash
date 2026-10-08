@@ -1,11 +1,12 @@
-from fash.core.exceptions import InvalidCharacterLengthError
-from fash.core.cell import Color, Style
 import os
-from typing import Literal, Tuple
-from fash.draw.reader import Reader
-from fash.draw.printer import Printer
+from typing import Literal
+
+from fash.core.cell import Color, Style
 from fash.core.cell_grid import CellGrid
-from fash.windowmanager.window import Window
+from fash.core.exceptions import InvalidCharacterLengthError
+from fash.draw.printer import Printer
+from fash.input import Reader
+from fash.window import Window
 
 
 class Drawer:
@@ -56,7 +57,7 @@ class Drawer:
     def calculate_row_offset(self):
         if self.render_mode == "dynamic":
             cursor_row, _ = self.reader.get_cursor_pos()
-            terminal_rows, _ = self._get_terminal_size()
+            _, terminal_rows = os.get_terminal_size()
 
             space_needed = self.total_lines
             space_available = terminal_rows - cursor_row
@@ -135,8 +136,3 @@ class Drawer:
     def _distribute_sizes(total: int, count: int) -> list[int]:
         base, remainder = divmod(total, count)
         return [base + 1] * remainder + [base] * (count - remainder)
-
-    @staticmethod
-    def _get_terminal_size() -> Tuple[int, int]:
-        col, row = os.get_terminal_size()
-        return row, col

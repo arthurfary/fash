@@ -4,11 +4,9 @@ from fash.core.cell import Color
 class AnsiCodes:
     """ANSI escape sequence constants."""
 
-    CURSOR_HOME = "\033[H"
     CLEAR_SCREEN = "\033[2J"
     RESET = "\033[0m"
     BOLD = "\033[1m"
-    # BOLD = {True: "\033[1m", False: "\x1b[22m"}
 
     COLOR_DEFAULT = "\033[39m"
     COLOR_RED = "\033[31m"

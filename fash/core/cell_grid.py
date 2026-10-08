@@ -1,10 +1,7 @@
-from fash.core.exceptions import InvalidCharacterLengthError
 from fash.core.cell import Cell, Style
+from fash.core.exceptions import InvalidCharacterLengthError
 
 
-# TODO:write a "set" and a "write" method:
-# - Set: sets char at pos (check inside grid)
-# - Write: writes a string in char form (for char in string, write to cell starting at row,col)
 class CellGrid:
     def __init__(self, rows: int, cols: int) -> None:
         self.rows = rows
@@ -25,4 +22,4 @@ class CellGrid:
                 self.cells[row_start][col + i] = Cell(char, style)
 
     def __str__(self) -> str:
-        return str([col for col in [row for row in self.cells]])
+        return str(self.cells)
