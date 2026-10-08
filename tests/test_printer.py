@@ -1,4 +1,5 @@
 import pytest
+
 from fash.core.cell import Color, Style
 from fash.draw.ansi import AnsiFormatter
 from fash.draw.printer import Printer

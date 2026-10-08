@@ -1,17 +1,14 @@
 from abc import ABC, abstractmethod
 
 from fash.core.cell_grid import CellGrid
-from fash.core.signal import Signal
 from fash.core.keys import Key
+from fash.core.signal import Signal
 
 
 class Widget(ABC):
     """
     Widget class
     """
-
-    def __init__(self) -> None:
-        pass
 
     @abstractmethod
     def draw(self, max_rows: int, max_cols: int) -> CellGrid:
