@@ -1,14 +1,11 @@
-from typing import Callable, Unpack, TypedDict
-from fash.core.cell import Style, Color
+from typing import Callable, Unpack
+
+from fash.core.cell import Color, Style
 from fash.core.cell_grid import CellGrid
+from fash.core.keys import Key, SpecialKey
 from fash.core.signal import Signal
 from fash.core.widget import Widget
-from fash.core.keys import Key, SpecialKey
-
-
-class TextWidgetStyle(TypedDict, total=False):
-    color: Color | None
-    bold: bool | None
+from fash.widgets.style import WidgetStyle
 
 
 class ListWidget(Widget):
@@ -18,7 +15,7 @@ class ListWidget(Widget):
         description: str,
         items: list[str],
         callback: Callable[[str], Signal | None],
-        **style: Unpack[TextWidgetStyle],
+        **style: Unpack[WidgetStyle],
     ) -> None:
         self.title = title
         self.description = description
