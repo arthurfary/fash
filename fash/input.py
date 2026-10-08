@@ -6,7 +6,7 @@ import termios
 import tty
 from contextlib import contextmanager
 from io import UnsupportedOperation
-from typing import Iterator, Tuple
+from typing import Generator, Iterator, Tuple
 
 from fash.core.exceptions import CursorPositionError
 from fash.core.keys import ARROW_KEYS, ESC, SIMPLE_KEYS, Key, SpecialKey
@@ -30,7 +30,7 @@ class Reader:
         tty.setraw(self.file_descriptor)
 
     @contextmanager
-    def raw_mode(self) -> Iterator["Reader"]:
+    def raw_mode(self) -> Generator["Reader", None, None]:
         """Put the terminal into raw mode for the duration of the block.
 
         Terminal settings are always restored on exit, even if the block
