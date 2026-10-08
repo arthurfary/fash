@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from typing import Iterable
 
+from fash.core.keys import Key, SpecialKey
 from fash.core.signal import Signal
 from fash.core.widget import Widget
 from fash.draw.drawer import Drawer
-from fash.core.keys import Key, SpecialKey
 
 
 class App:

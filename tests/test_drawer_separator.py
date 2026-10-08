@@ -1,13 +1,15 @@
+from unittest.mock import MagicMock
+
+import pytest
+
 from fash.core.cell import Color, Style
 from fash.core.cell_grid import CellGrid
 from fash.core.widget import Widget
 from fash.draw.drawer import Drawer
-from fash.windowmanager.window import Window
-import pytest
-from unittest.mock import MagicMock
 from fash.draw.printer import Printer
-from fash.draw.reader import Reader
+from fash.input import Reader
 from fash.widgets.text_widget import TextWidget
+from fash.window import Window
 
 
 class DummyWidget(Widget):

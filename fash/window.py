@@ -3,21 +3,8 @@ from fash.core.widget import Widget
 
 
 class Window:
-    pass
-
     def __init__(self, row: int, col: int):
         self.grid: list[list[Widget | None]] = [[None for _ in range(col)] for _ in range(row)]
-        # self.make_grid(row, col) --> call only of need resizing
-
-    def make_grid(self, row: int, col: int):
-        row_list = []
-        for _ in range(row):
-            col_list = []
-            for _ in range(col):
-                col_list.append(None)
-            row_list.append(col_list)
-
-        self.grid = row_list
 
     def get_grid_size(self) -> tuple[int, int]:
         if len(self.grid) == 0:

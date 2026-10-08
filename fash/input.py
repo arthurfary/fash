@@ -1,15 +1,14 @@
-from contextlib import contextmanager
-from fash.core.exceptions import CursorPositionError
-from typing import Tuple
-from io import UnsupportedOperation
-from typing import Iterator
 import os
 import re
 import select
 import sys
 import termios
 import tty
+from contextlib import contextmanager
+from io import UnsupportedOperation
+from typing import Iterator, Tuple
 
+from fash.core.exceptions import CursorPositionError
 from fash.core.keys import ARROW_KEYS, ESC, SIMPLE_KEYS, Key, SpecialKey
 
 
@@ -19,14 +18,6 @@ class Reader:
         try:
             self.file_descriptor: int = sys.stdin.fileno()
         except UnsupportedOperation:
-            """
-            TODO: Refactor and define a terminal reading strategy
-                - This exception only happens in pytest. Reader should extend a BaseReader class and pytest 
-                must create a FakeReader passed to drawer through Dependency Injection
-                - We need to determine if a Reader class really should be in the draw module
-                - Currently there is no definition on how user input will be defined and handled in widgets
-                so this class is a 'temporary' measure wich only solves the drawer need for the current cursor position
-            """
             pass
 
     def save_terminal_settings(self):

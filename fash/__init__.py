@@ -1,19 +1,24 @@
 """fash - build terminal user interfaces from a grid of widgets.
 
-Quick start::
+Structure and rendering come from :mod:`fash`; ready-made widgets live in
+:mod:`fash.widgets`::
 
-    from fash import Window, Drawer, TextWidget, Color
+    from fash import App, Drawer, Signal, Window
+    from fash.widgets import ListWidget
 
-    window = Window(1, 2)
-    window.set_at(0, 0, TextWidget("Left", "Hello", color=Color.RED))
-    window.set_at(0, 1, TextWidget("Right", "World", color=Color.BLUE))
+    def on_pick(item: str) -> Signal | None:
+        return Signal.QUIT
 
-    Drawer(20, 80, window).draw_all()
+    window = Window(1, 1)
+    window.set_at(0, 0, ListWidget("Menu", "Pick one", ["alpha", "beta"], on_pick))
 
-To build a custom widget, subclass :class:`Widget` and return a
+    App(Drawer(20, 60, window), focused_widget=window.get_at(0, 0)).run()
+
+To build a custom widget, subclass :class:`fash.widgets.Widget` and return a
 :class:`CellGrid` from ``draw``.
 """
 
+from fash.app import App
 from fash.core import (
     Cell,
     CellGrid,
@@ -21,12 +26,12 @@ from fash.core import (
     CursorPositionError,
     InvalidCharacterLengthError,
     Style,
-    Widget,
     WidgetOutOfBoundsError,
 )
+from fash.core.keys import Key, SpecialKey
+from fash.core.signal import Signal
 from fash.draw import Drawer
-from fash.widgets import TextWidget, TextWidgetStyle
-from fash.windowmanager import Window
+from fash.window import Window
 
 __version__ = "0.1.0"
 
@@ -34,15 +39,16 @@ __all__ = [
     # Layout & rendering
     "Window",
     "Drawer",
-    # Widgets
-    "Widget",
-    "TextWidget",
-    "TextWidgetStyle",
+    "App",
     # Styling
     "Color",
     "Style",
     "Cell",
     "CellGrid",
+    # Input
+    "Key",
+    "SpecialKey",
+    "Signal",
     # Exceptions
     "InvalidCharacterLengthError",
     "CursorPositionError",
